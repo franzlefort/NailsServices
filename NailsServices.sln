@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdministrationServices", "AdministrationServices\AdministrationServices.csproj", "{1FE9F0F1-2EDC-471A-917B-8F6AB850DAB9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdministrationService", "AdministrationService\AdministrationService.csproj", "{1FE9F0F1-2EDC-471A-917B-8F6AB850DAB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
