@@ -1,0 +1,18 @@
+<mat-drawer-container class="example-container">
+
+  <mat-drawer mode="side" class="example-sidenav" opened>
+    <mat-list>
+      <mat-list-item *ngFor="let menuItem of menuItems">
+        <button  class="menu-button" mat-button color="default">
+          {{menuItem}}
+        </button>
+      </mat-list-item>
+    </mat-list>
+
+  </mat-drawer>
+
+  <div class="example-sidenav-content">
+    <router-outlet></router-outlet>
+  </div>
+
+</mat-drawer-container>

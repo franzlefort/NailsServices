@@ -1,12 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: "dashboard.component.html",
+  selector: 'app-post',
+  template: `
+    <p>
+      post works!
+    </p>
+  `,
   styles: [
   ]
 })
-export class DashboardComponent implements OnInit {
+export class PostComponent implements OnInit {
 
   constructor() { }
 
