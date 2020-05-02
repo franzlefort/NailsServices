@@ -2,15 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AdministrationService.Database.Contexts;
+using AdministrationService.Database.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace AdministrationService
 {
@@ -26,9 +30,22 @@ namespace AdministrationService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // получаем строку подключения из файла конфигурации
+            var connection = Configuration.GetConnectionString("DefaultConnection");
+            
+            // добавляем контекст MobileContext в качестве сервиса в приложение
+            services.AddDbContext<AdministrationContext>(options =>
+                options.UseNpgsql(connection));
+
+            services.AddScoped<IDbRepository, DbRepository>();
             services.AddControllers();
             
-            services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/dist");
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
+            //services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/dist");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,21 +60,31 @@ namespace AdministrationService
 
             app.UseRouting();
 
-            app.UseStaticFiles();
-            if (!env.IsDevelopment())
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
             {
-                app.UseSpaStaticFiles();
-            }
- 
-            app.UseSpa(spa =>
-            {
-                spa.Options.SourcePath = "ClientApp";
- 
-                if (env.IsDevelopment())
-                {
-                    spa.UseAngularCliServer(npmScript: "start");
-                }
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+            
+            // app.UseStaticFiles();
+            // if (!env.IsDevelopment())
+            // {
+            //     app.UseSpaStaticFiles();
+            // }
+ 
+            // app.UseSpa(spa =>
+            // {
+            //     spa.Options.SourcePath = "ClientApp";
+            //
+            //     if (env.IsDevelopment())
+            //     {
+            //         spa.UseAngularCliServer(npmScript: "start");
+            //     }
+            // });
 
             app.UseEndpoints(endpoints =>
             {
