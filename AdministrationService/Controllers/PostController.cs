@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AdministrationService.Database.Entities;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AdministrationService.Controllers
 {
-    [Route("api/[controller]/{action}")]
+    [Route("api/[controller]")]
     public class PostController : ControllerBase
     {
         private readonly IDbRepository _dbRepository;
@@ -17,7 +18,15 @@ namespace AdministrationService.Controllers
             _dbRepository = dbRepository;
         }
         
-        [HttpGet]
+        [HttpGet("GetAll")]
+        public IQueryable<Post> GetAll()
+        {
+            var posts = _dbRepository.Get<Post>();
+
+            return posts;
+        }
+        
+        [HttpGet("Get")]
         public Post Get(Guid id)
         {
             var post = _dbRepository.Get<Post>(x => x.Id == id).FirstOrDefault();
@@ -25,7 +34,7 @@ namespace AdministrationService.Controllers
             return post;
         }
 
-        [HttpPost]
+        [HttpPost("Add")]
         public async Task<Guid> Add([FromBody] Post post)
         {
             var newId = await _dbRepository.Add(post);
@@ -34,7 +43,7 @@ namespace AdministrationService.Controllers
             return newId;
         }
 
-        [HttpDelete]
+        [HttpDelete("Remove")]
         public async Task Delete(Guid id)
         {
             await _dbRepository.Delete<Post>(id);

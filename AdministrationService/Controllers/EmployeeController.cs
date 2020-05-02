@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AdministrationService.Controllers
 {
-    [Route("api/[controller]/{action}")]
+    [Route("api/[controller]")]
     public class EmployeeController : ControllerBase
     {
         private readonly IDbRepository _dbRepository;
@@ -17,7 +17,15 @@ namespace AdministrationService.Controllers
             _dbRepository = dbRepository;
         }
         
-        [HttpGet]
+        [HttpGet("GetAll")]
+        public IQueryable<Employee> GetAll()
+        {
+            var employees = _dbRepository.Get<Employee>();
+
+            return employees;
+        }
+        
+        [HttpGet("Get")]
         public Employee Get(Guid id)
         {
             var employee = _dbRepository.Get<Employee>(x => x.Id == id).FirstOrDefault();
@@ -25,7 +33,7 @@ namespace AdministrationService.Controllers
             return employee;
         }
 
-        [HttpPost]
+        [HttpPost("Add")]
         public async Task<Guid> Add([FromBody] Employee employee)
         {
             var newId = await _dbRepository.Add(employee);
@@ -34,7 +42,7 @@ namespace AdministrationService.Controllers
             return newId;
         }
 
-        [HttpDelete]
+        [HttpDelete("Remove")]
         public async Task Delete(Guid id)
         {
             await _dbRepository.Delete<Employee>(id);
