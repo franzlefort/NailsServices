@@ -8,27 +8,27 @@ using Microsoft.AspNetCore.Mvc;
 namespace AdministrationService.Controllers
 {
     [Route("api/[controller]/{action}")]
-    public class PostController : ControllerBase
+    public class BranchController : ControllerBase
     {
         private readonly IDbRepository _dbRepository;
         
-        public PostController(IDbRepository dbRepository)
+        public BranchController(IDbRepository dbRepository)
         {
             _dbRepository = dbRepository;
         }
         
         [HttpGet]
-        public Post Get(Guid id)
+        public Branch Get(Guid id)
         {
-            var post = _dbRepository.Get<Post>(x => x.Id == id).FirstOrDefault();
+            var branch = _dbRepository.Get<Branch>(x => x.Id == id).FirstOrDefault();
 
-            return post;
+            return branch;
         }
 
         [HttpPost]
-        public async Task<Guid> Add([FromBody] Post post)
+        public async Task<Guid> Add([FromBody] Branch employee)
         {
-            var newId = await _dbRepository.Add(post);
+            var newId = await _dbRepository.Add(employee);
             await _dbRepository.SaveChangesAsync();
 
             return newId;
@@ -37,7 +37,7 @@ namespace AdministrationService.Controllers
         [HttpDelete]
         public async Task Delete(Guid id)
         {
-            await _dbRepository.Delete<Post>(id);
+            await _dbRepository.Delete<Employee>(id);
             await _dbRepository.SaveChangesAsync();
         }
     }
