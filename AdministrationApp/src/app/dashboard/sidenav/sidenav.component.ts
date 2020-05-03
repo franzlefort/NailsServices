@@ -9,13 +9,18 @@ export class SidenavComponent implements OnInit {
 
   constructor() { }
 
-  public menuItems: string[] = [
-      'Добавить работника',
-      'Добавить филиал',
-      'Добавить должность'
+  public menuItems: MenuItem[] = [
+      {name: 'Добавить филиал', link: 'branch-management'},
+      {name: 'Добавить должность', link: 'post-management'},
+      {name: 'Добавить сотрудника', link: 'employee-management'},
   ];
 
   ngOnInit(): void {
   }
 
+}
+
+export class MenuItem {
+    name: string;
+    link: string;
 }
