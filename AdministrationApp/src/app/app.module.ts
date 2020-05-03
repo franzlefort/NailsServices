@@ -15,6 +15,7 @@ import {MatIconModule} from '@angular/material/icon';
 import { EmployeeComponent } from './dashboard/administration-components/employee/employee.component';
 import { PostComponent } from './dashboard/administration-components/post/post.component';
 import { BranchComponent } from './dashboard/administration-components/branch/branch.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -34,9 +35,11 @@ import { BranchComponent } from './dashboard/administration-components/branch/br
     MatSidenavModule,
     MatListModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

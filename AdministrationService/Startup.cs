@@ -45,6 +45,16 @@ namespace AdministrationService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
             });
+            
+            // Add service and create Policy with options
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader()
+                );
+            });
             //services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/dist");
         }
 
@@ -69,6 +79,8 @@ namespace AdministrationService
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
             });
+            
+            app.UseCors("CorsPolicy");
             
             // app.UseStaticFiles();
             // if (!env.IsDevelopment())

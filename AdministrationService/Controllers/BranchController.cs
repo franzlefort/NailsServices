@@ -3,10 +3,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using AdministrationService.Database.Entities;
 using AdministrationService.Database.Repositories;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdministrationService.Controllers
 {
+    [EnableCors("CorsPolicy")]
     [Route("api/[controller]")]
     public class BranchController : ControllerBase
     {
