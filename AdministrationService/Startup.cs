@@ -1,19 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AdministrationService.Database.Contexts;
-using AdministrationService.Database.Repositories;
+using System.Text;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SpaServices.AngularCli;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using AdministrationService.Database.Contexts;
+using AdministrationService.Database.Repositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace AdministrationService
@@ -32,20 +28,17 @@ namespace AdministrationService
         {
             // получаем строку подключения из файла конфигурации
             var connection = Configuration.GetConnectionString("DefaultConnection");
-            
+
             // добавляем контекст MobileContext в качестве сервиса в приложение
             services.AddDbContext<AdministrationContext>(options =>
                 options.UseNpgsql(connection));
 
             services.AddScoped<IDbRepository, DbRepository>();
             services.AddControllers();
-            
+
             // Register the Swagger generator, defining 1 or more Swagger documents
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
-            });
-            
+            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo {Title = "My API", Version = "v1"}); });
+
             // Add service and create Policy with options
             services.AddCors(options =>
             {
@@ -55,7 +48,27 @@ namespace AdministrationService
                         .AllowAnyHeader()
                 );
             });
-            //services.AddSpaStaticFiles(configuration => configuration.RootPath = "ClientApp/dist");
+
+            var key = Encoding.UTF8.GetBytes("super-secret-key-ave-franz");
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = false;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                };
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -117,6 +117,7 @@
         <e p="ClientApp/node_modules/worker-farm" t="IncludeRecursive" />
         <e p="ClientApp/node_modules/zone.js" t="IncludeRecursive" />
         <e p="Controllers" t="Include">
+          <e p="AuthenticationController.cs" t="Include" />
           <e p="BranchController.cs" t="Include" />
           <e p="EmployeeController.cs" t="Include" />
           <e p="PostController.cs" t="Include" />
@@ -144,6 +145,9 @@
           <e p="20200502170155_Instant2.cs" t="Include" />
           <e p="20200502170155_Instant2.Designer.cs" t="Include" />
           <e p="AdministrationContextModelSnapshot.cs" t="Include" />
+        </e>
+        <e p="Models" t="Include">
+          <e p="LoginModel.cs" t="Include" />
         </e>
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">

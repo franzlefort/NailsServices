@@ -13,6 +13,7 @@ export class SidenavComponent implements OnInit {
       {name: 'Добавить филиал', link: 'branch-management'},
       {name: 'Добавить должность', link: 'post-management'},
       {name: 'Добавить сотрудника', link: 'employee-management'},
+      {name: 'Template', link: 'template-management'},
   ];
 
   ngOnInit(): void {
